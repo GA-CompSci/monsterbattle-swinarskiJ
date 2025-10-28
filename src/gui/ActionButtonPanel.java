@@ -20,10 +20,10 @@ public class ActionButtonPanel extends JPanel {
     };
     
     // Visual constants
-    private static final Color BUTTON_BG = new Color(0, 130, 0);
-    private static final Color BUTTON_HOVER = new Color(100, 149, 237);
-    private static final Color BUTTON_PRESSED = new Color(50, 100, 150);
-    private static final Color BUTTON_DISABLED = new Color(100, 100, 100);
+    private static final Color BUTTON_BG = new Color(0, 20, 0);
+    private static final Color BUTTON_HOVER = new Color(0, 100, 0);
+    private static final Color BUTTON_PRESSED = new Color(0, 180, 0);
+    private static final Color BUTTON_DISABLED = new Color(0, 0, 0);
     private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 16);
     
     /**
@@ -35,7 +35,7 @@ public class ActionButtonPanel extends JPanel {
         this.buttons = new JButton[4];
         
         setLayout(new GridLayout(1, 4, 10, 0));
-        setBackground(new Color(40, 40, 50));
+        setBackground(new Color(0, 0, 0));
         
         createButtons();
     }
@@ -60,11 +60,11 @@ public class ActionButtonPanel extends JPanel {
         JButton button = new JButton(label);
         button.setFont(BUTTON_FONT);
         button.setBackground(BUTTON_BG);
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.GREEN);
         button.setFocusPainted(false);
         button.setBorderPainted(true);
         button.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.WHITE, 2),
+            BorderFactory.createLineBorder(Color.GREEN, 2),
             BorderFactory.createEmptyBorder(15, 20, 15, 20)
         ));
         button.setActionCommand(String.valueOf(index));

@@ -17,9 +17,9 @@ public class PlayerStatusPanel extends JPanel {
     // Visual constants
     private static final Color PANEL_BG = new Color(0, 20, 0);
     private static final Color HEALTH_BAR_BG = new Color(0, 0, 0);
-    private static final Color HEALTH_BAR_FULL = new Color(0, 255, 0);
-    private static final Color HEALTH_BAR_MED = new Color(0, 180, 0);
-    private static final Color HEALTH_BAR_LOW = new Color(0, 70, 0);
+    private static final Color HEALTH_BAR_FULL = new Color(0, 180, 0);
+    private static final Color HEALTH_BAR_MED = new Color(180, 180, 0);
+    private static final Color HEALTH_BAR_LOW = new Color(180, 0, 0);
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 16);
     private static final Font HEALTH_FONT = new Font("Arial", Font.BOLD, 20);
     private static final int BAR_HEIGHT = 30;

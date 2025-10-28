@@ -103,14 +103,14 @@ public class MonsterDisplayPanel extends JPanel {
         private boolean highlighted = false;
         
         // Colors
-        private static final Color TILE_BG = new Color(60, 60, 70);
-        private static final Color TILE_BORDER = new Color(100, 100, 120);
-        private static final Color HIGHLIGHT_COLOR = new Color(255, 215, 0);
-        private static final Color DEAD_COLOR = new Color(80, 20, 20);
-        private static final Color HEALTH_BAR_BG = new Color(0, 0, 0);
-        private static final Color HEALTH_BAR_FULL = new Color(0, 255, 0);
-        private static final Color HEALTH_BAR_MED = new Color(0, 180, 0);
-        private static final Color HEALTH_BAR_LOW = new Color(0, 70, 0);
+        private static final Color TILE_BG = new Color(0, 20, 0);
+        private static final Color TILE_BORDER = new Color(0, 180, 0);
+        private static final Color HIGHLIGHT_COLOR = new Color(255, 255, 255);
+        private static final Color DEAD_COLOR = new Color(0, 50, 0);
+        private static final Color HEALTH_BAR_BG = new Color(0, 20, 0);
+        private static final Color HEALTH_BAR_FULL = new Color(0, 180, 0);
+        private static final Color HEALTH_BAR_MED = new Color(180, 180, 0);
+        private static final Color HEALTH_BAR_LOW = new Color(180, 0, 0);
         
         
         public MonsterTile(Monster monster, int index) {
@@ -136,21 +136,21 @@ public class MonsterDisplayPanel extends JPanel {
             
             // Stats
             JLabel healthLabel = new JLabel("HP: " + monster.health());
-            healthLabel.setForeground(Color.WHITE);
+            healthLabel.setForeground(Color.PINK);
             healthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             
             JLabel damageLabel = new JLabel("DMG: " + monster.damage());
-            damageLabel.setForeground(Color.ORANGE);
+            damageLabel.setForeground(Color.RED);
             damageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             
             JLabel speedLabel = new JLabel("SPD: " + monster.speed());
-            speedLabel.setForeground(Color.CYAN);
+            speedLabel.setForeground(Color.BLUE);
             speedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             
             // Special ability if exists
             if (!monster.special().isEmpty()) {
                 JLabel specialLabel = new JLabel("★ " + monster.special());
-                specialLabel.setForeground(new Color(255, 215, 0));
+                specialLabel.setForeground(new Color(220, 0, 255));
                 specialLabel.setFont(new Font("Arial", Font.ITALIC, 11));
                 specialLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 infoPanel.add(specialLabel);

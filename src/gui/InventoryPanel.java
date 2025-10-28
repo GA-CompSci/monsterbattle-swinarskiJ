@@ -86,7 +86,7 @@ public class InventoryPanel extends JPanel {
     private void showEmptyMessage() {
         JLabel emptyLabel = new JLabel("No items", SwingConstants.CENTER);
         emptyLabel.setFont(ITEM_FONT);
-        emptyLabel.setForeground(Color.GRAY);
+        emptyLabel.setForeground(Color.GREEN);
         emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         itemListPanel.add(Box.createVerticalGlue());
         itemListPanel.add(emptyLabel);
@@ -103,7 +103,7 @@ public class InventoryPanel extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(5, 0));
         panel.setBackground(ITEM_BG);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(100, 100, 120), 1),
+            BorderFactory.createLineBorder(new Color(0, 100, 0), 1),
             BorderFactory.createEmptyBorder(8, 10, 8, 10)
         ));
         panel.setMaximumSize(new Dimension(PANEL_WIDTH - 20, 50));
@@ -116,13 +116,13 @@ public class InventoryPanel extends JPanel {
         // Item name
         JLabel nameLabel = new JLabel(item.getName());
         nameLabel.setFont(ITEM_FONT);
-        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setForeground(Color.BLACK);
         panel.add(nameLabel, BorderLayout.CENTER);
         
         // Item index/slot number
         JLabel indexLabel = new JLabel("[" + index + "]");
         indexLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        indexLabel.setForeground(Color.CYAN);
+        indexLabel.setForeground(Color.BLACK);
         panel.add(indexLabel, BorderLayout.EAST);
         
         return panel;

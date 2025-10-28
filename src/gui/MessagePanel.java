@@ -14,7 +14,7 @@ public class MessagePanel extends JPanel {
     
     // Visual constants
     private static final Color PANEL_BG = new Color(0, 20, 0);
-    private static final Color TEXT_COLOR = Color.GREEN;
+    private static final Color TEXT_COLOR = Color.WHITE;
     private static final Color PREVIOUS_TEXT_COLOR = new Color(0, 180, 0);
     private static final Font MESSAGE_FONT = new Font("Arial", Font.BOLD, 16);
     private static final Font PREVIOUS_FONT = new Font("Arial", Font.PLAIN, 14);
@@ -28,7 +28,7 @@ public class MessagePanel extends JPanel {
         setPreferredSize(new Dimension(0, PANEL_HEIGHT));
         setBackground(PANEL_BG);
         setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.GREEN, 2),
+            BorderFactory.createLineBorder(Color.WHITE, 2),
             BorderFactory.createEmptyBorder(8, 15, 8, 15)
         ));
         

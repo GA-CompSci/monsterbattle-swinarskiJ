@@ -1,7 +1,7 @@
 package gui;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * ActionButtonPanel - Four customizable action buttons
@@ -20,7 +20,7 @@ public class ActionButtonPanel extends JPanel {
     };
     
     // Visual constants
-    private static final Color BUTTON_BG = new Color(70, 130, 180);
+    private static final Color BUTTON_BG = new Color(0, 130, 0);
     private static final Color BUTTON_HOVER = new Color(100, 149, 237);
     private static final Color BUTTON_PRESSED = new Color(50, 100, 150);
     private static final Color BUTTON_DISABLED = new Color(100, 100, 100);

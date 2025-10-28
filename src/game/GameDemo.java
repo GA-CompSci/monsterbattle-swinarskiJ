@@ -1,7 +1,6 @@
 package game;
-import java.util.ArrayList;
-
 import gui.MonsterBattleGUI;
+import java.util.ArrayList;
 
 /**
  * GameDemo - Complete working example of a monster battle game
@@ -58,7 +57,7 @@ public class GameDemo {
         
         // CHOOSE DIFFICULTY (number of monsters to face)
         int numMonsters = chooseDifficulty();
-        
+         
         // PICK YOUR CHARACTER BUILD (using the 4 action buttons!)
         pickCharacterBuild();
         

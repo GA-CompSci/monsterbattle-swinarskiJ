@@ -1,10 +1,8 @@
 package gui;
-import javax.swing.*;
-
 import game.Monster;
-
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
 /**
  * MonsterDisplayPanel - Displays monster tiles in a responsive grid
@@ -19,7 +17,7 @@ public class MonsterDisplayPanel extends JPanel {
     private int highlightedIndex = -1;
     
     // Visual constants
-    private static final Color BACKGROUND_COLOR = new Color(40, 40, 50);
+    private static final Color BACKGROUND_COLOR = new Color(0, 20, 0);
     private static final int TILE_SPACING = 10;
     
     /**
@@ -30,9 +28,9 @@ public class MonsterDisplayPanel extends JPanel {
         tiles = new ArrayList<>();
         setBackground(BACKGROUND_COLOR);
         setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(Color.CYAN, 2),
+            BorderFactory.createLineBorder(Color.GREEN, 2),
             "MONSTERS",
-            0, 0, new Font("Arial", Font.BOLD, 16), Color.CYAN));
+            0, 0, new Font("Arial", Font.BOLD, 16), Color.GREEN));
     }
     
     /**
@@ -109,10 +107,11 @@ public class MonsterDisplayPanel extends JPanel {
         private static final Color TILE_BORDER = new Color(100, 100, 120);
         private static final Color HIGHLIGHT_COLOR = new Color(255, 215, 0);
         private static final Color DEAD_COLOR = new Color(80, 20, 20);
-        private static final Color HEALTH_BAR_BG = new Color(40, 40, 50);
-        private static final Color HEALTH_BAR_FULL = new Color(50, 205, 50);
-        private static final Color HEALTH_BAR_MED = new Color(255, 165, 0);
-        private static final Color HEALTH_BAR_LOW = new Color(220, 20, 60);
+        private static final Color HEALTH_BAR_BG = new Color(0, 0, 0);
+        private static final Color HEALTH_BAR_FULL = new Color(0, 255, 0);
+        private static final Color HEALTH_BAR_MED = new Color(0, 180, 0);
+        private static final Color HEALTH_BAR_LOW = new Color(0, 70, 0);
+        
         
         public MonsterTile(Monster monster, int index) {
             this.monster = monster;

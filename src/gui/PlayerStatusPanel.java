@@ -1,6 +1,6 @@
 package gui;
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * PlayerStatusPanel - Displays the player's health and stats
@@ -15,11 +15,11 @@ public class PlayerStatusPanel extends JPanel {
     private HealthBar healthBar;
     
     // Visual constants
-    private static final Color PANEL_BG = new Color(50, 50, 60);
-    private static final Color HEALTH_BAR_BG = new Color(40, 40, 50);
-    private static final Color HEALTH_BAR_FULL = new Color(50, 205, 50);
-    private static final Color HEALTH_BAR_MED = new Color(255, 165, 0);
-    private static final Color HEALTH_BAR_LOW = new Color(220, 20, 60);
+    private static final Color PANEL_BG = new Color(0, 20, 0);
+    private static final Color HEALTH_BAR_BG = new Color(0, 0, 0);
+    private static final Color HEALTH_BAR_FULL = new Color(0, 255, 0);
+    private static final Color HEALTH_BAR_MED = new Color(0, 180, 0);
+    private static final Color HEALTH_BAR_LOW = new Color(0, 70, 0);
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 16);
     private static final Font HEALTH_FONT = new Font("Arial", Font.BOLD, 20);
     private static final int BAR_HEIGHT = 30;
@@ -42,7 +42,7 @@ public class PlayerStatusPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBackground(PANEL_BG);
         setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.CYAN, 2),
+            BorderFactory.createLineBorder(Color.GREEN, 2),
             BorderFactory.createEmptyBorder(10, 15, 10, 15)
         ));
         
@@ -59,11 +59,11 @@ public class PlayerStatusPanel extends JPanel {
         
         JLabel titleLabel = new JLabel("PLAYER", SwingConstants.LEFT);
         titleLabel.setFont(TITLE_FONT);
-        titleLabel.setForeground(Color.CYAN);
+        titleLabel.setForeground(Color.GREEN);
         
         healthLabel = new JLabel(currentHealth + " / " + maxHealth + " HP", SwingConstants.RIGHT);
         healthLabel.setFont(HEALTH_FONT);
-        healthLabel.setForeground(Color.WHITE);
+        healthLabel.setForeground(Color.GREEN);
         
         titlePanel.add(titleLabel, BorderLayout.WEST);
         titlePanel.add(healthLabel, BorderLayout.EAST);
@@ -87,7 +87,7 @@ public class PlayerStatusPanel extends JPanel {
         // Update label color based on health
         double healthPercent = (double) this.currentHealth / maxHealth;
         if (healthPercent > 0.5) {
-            healthLabel.setForeground(Color.WHITE);
+            healthLabel.setForeground(Color.GREEN);
         } else if (healthPercent > 0.25) {
             healthLabel.setForeground(new Color(255, 200, 100));
         } else {

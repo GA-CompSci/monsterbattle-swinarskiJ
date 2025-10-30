@@ -23,11 +23,13 @@ public class Game {
     // Game state - YOU manage these
     private ArrayList<Monster> monsters;
     private ArrayList<Item> inventory;
+    private boolean shieldUp = false;
     private int playerHealth;
     private int playerDamage;
     private int playerHeal;
     private int playerSpeed;
     private int playerShield;
+    private Monster lastAttacked;
     
     /**
      * Main method - start YOUR game!
@@ -103,6 +105,7 @@ public class Game {
     private void gameLoop() {
         // Keep playing while monsters alive and player alive
         while (countLivingMonsters() > 0 && playerHealth > 0) {
+            shieldUp =false;
             
             // PLAYER'S TURN
             gui.displayMessage("Your turn! HP: " + playerHealth);
@@ -193,7 +196,7 @@ public class Game {
             // Tank: high shield, low damage and speed
             gui.displayMessage("You chose Tank! Tough defense, but slow attacks.");
             playerSpeed -= (int)(Math.random() * 9) + 1;        // Reduce speed by 1-9
-            playerDamage -= (int)(Math.random() * 40) + 100;   // Reduce damage by 100-199
+            playerDamage -= (int)(Math.random() * 21) + 5;   // Reduce damage by 5-25
         } else if (choice == 2) {
             // Healer: high healing, low damage and shield
             gui.displayMessage("You chose Healer! Great recovery, but fragile.");
@@ -242,10 +245,35 @@ public class Game {
      * - Special effects?
      */
     private void attackMonster() {
-        // TODO: Implement your attack!
-        // Hint: Look at GameDemo.java for an example
-        
-        gui.displayMessage("TODO: Implement attack!");
+        gui.displayMessage("Attack!");
+        Monster target = getRandomLivingMonster();
+        lastAttacked = target;
+        if (target != null) {
+            int baseDamage = (int)(playerDamage * 0.15);  // 15% of damage stat
+            int damage = baseDamage + (int)(Math.random() * baseDamage);
+            if(damage == 0) {
+                playerHealth -= 5;
+                gui.displayMessage("WOW! You suck!");
+                gui. updatePlayerHealth(playerHealth);
+            }
+            else if(damage == playerDamage) {
+                gui.displayMessage("Critical Kill! ("+damage+" dmg)");
+                target.takeDamage(target.health());
+            }
+            else {
+                target.takeDamage(damage);
+                gui.displayMessage("Hit monster for "+damage+" dmg.");
+            }
+            
+            target.takeDamage(damage);
+            gui.displayMessage("Hit for " + damage + " damage!");
+            
+            // Show which one we hit
+            int index = monsters.indexOf(target);
+            gui.highlightMonster(index);
+            gui.pause(600);
+            gui.highlightMonster(-1);
+        }
     }
     
     /**
@@ -257,9 +285,9 @@ public class Game {
      * - Something else?
      */
     private void defend() {
-        // TODO: Implement your defend!
+        shieldUp = true;
         
-        gui.displayMessage("TODO: Implement defend!");
+        gui.displayMessage("Shield up!");
     }
     
     /**
@@ -299,29 +327,25 @@ public class Game {
      * - Special abilities?
      */
     private void monsterAttack() {
-        Monster target = getRandomLivingMonster();
-        if (target != null) {
-            int baseDamage = (int)(playerDamage * 0.15);  // 15% of damage stat
-            int damage = baseDamage + (int)(Math.random() * baseDamage);
-            if(damage == 0) {
-                playerHealth -= 5;
-                gui.displayMessage("WOW! You suck!");
-                gui. updatePlayerHealth(playerHealth);
+        //build every monster that gets to attack
+        ArrayList<Monster> attackers = new ArrayList<>();
+        if(lastAttacked.health()>0 && !attackers.contains(lastAttacked)) attackers.add(lastAttacked);
+
+        for (Monster m : monsters) {
+            double incomingDamage = m.damage();
+            if(shieldUp){
+                incomingDamage -=playerShield;
+                gui.displayMessage("Blocked for "+playerShield+" damage.");
             }
-            else if(damage == playerDamage) {
-                gui.displayMessage("Critical Kill! ("+damage+" dmg)");
-                target.takeDamage(target.health());
+            else{
+                playerHealth -= m.damage();
             }
-            else {
-                target.takeDamage(damage);
-                gui.displayMessage("Hit monster for "+damage+" dmg.");
-            }
+
+            gui.updatePlayerHealth(playerHealth);
             
-            target.takeDamage(damage);
-            gui.displayMessage("Hit for " + damage + " damage!");
-            
-            // Show which one we hit
-            int index = monsters.indexOf(target);
+
+            //who hit us?
+            int index = monsters.indexOf(m);
             gui.highlightMonster(index);
             gui.pause(600);
             gui.highlightMonster(-1);

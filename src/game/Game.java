@@ -30,6 +30,7 @@ public class Game {
     private int playerSpeed;
     private int playerShield;
     private Monster lastAttacked;
+    private boolean poisoned = false;
     
     /**
      * Main method - start YOUR game!
@@ -57,19 +58,34 @@ public class Game {
         gui = new MonsterBattleGUI("Monster Battle - Javi Edition");
 
         
-        // CHOOSE DIFFICULTY (number of monsters to face)
+        //  CHOOSE DIFFICULTY (number of monsters to face)
         int numMonsters = chooseDifficulty();
         monsters = new ArrayList<>();
+        
         //special abilities?
         for(int k = 0; k<numMonsters; k++) {
-            if(k==0){
+            
+            int specialPick = (int)(Math.random() * 8)+1;
+            
+            if(specialPick == 2){
                 //special monster
                 monsters.add(new Monster("Vampire"));
+            }
+            else if(specialPick == 4){
+                monsters.add(new Monster("Posion"));
+            }
+            else if(specialPick == 6){
+                monsters.add(new Monster("Equalizer"));
+            }
+            else if(specialPick == 8){
+                monsters.add(new Monster("Beefy"));
             }
             else{
                 monsters.add(new Monster());
             }
         }
+    
+        
         gui.updateMonsters(monsters);
        
 
@@ -344,9 +360,46 @@ public class Game {
                 shieldPower -= absorbance;
                 gui.displayMessage("You block for " + absorbance + " damage. You have " + shieldPower + " shield left.");
             }
+                
+            // After monster deals damage...
+            if (!monster.special().isEmpty()) {
+                if (monster.special().equals("Vampire")) {
+                    monster.takeDamage(-damageTaken);
+                }
+                else if(monster.special().equals("Poison")){
+                    poisoned = true;
+                }
+                else if(monster.special().equals("Equalizer")){
+                    if (monster.health() < monster.health() / 2){
+                        if(monster.health() < monster.health() / 4){
+                            damageTaken += damageTaken*4;
+                        }
+                        else damageTaken += damageTaken*2;
+                    }
+                }
+                else if(monster.special().equals("Beefy")){
+                    damageTaken += damageTaken*2;
+                }
+            }
+
+            // move shield mitigation here
+
             if (damageTaken > 0) {
                 playerHealth -= damageTaken;
                 gui.displayMessage("Monster hits you for " + damageTaken + " damage!");
+
+                if (poisoned) {
+                    playerHealth -= 10;
+                    gui.displayMessage("You took 10 poison damage.");
+                    gui.pause(600);
+                    if (((int)(Math.random() * 8)) > 6) {
+                        gui.displayMessage("You recovered from the posion.");
+                        gui.pause(600);
+                        playerHealth += 5;
+                        poisoned = false;
+                }
+            }
+
                 gui.updatePlayerHealth(playerHealth);
             }
             int index = monsters.indexOf(monster);
@@ -354,6 +407,7 @@ public class Game {
             gui.pause(600);
             gui.highlightMonster(-1);
         }
+        
     }
     
     // ==================== HELPER METHODS ====================
@@ -362,6 +416,7 @@ public class Game {
     /**
      * Count how many monsters are still alive
      */
+    
     private int countLivingMonsters() {
         int count = 0;
         for (Monster m : monsters) {

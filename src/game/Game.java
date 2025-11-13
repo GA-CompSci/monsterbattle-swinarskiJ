@@ -50,8 +50,6 @@ public class Game {
     
     /**
      * Setup - create the GUI and initial game state
-     * 
-     * TODO: Customize this! How many monsters? What items? How much health?
      */
     private void setupGame() {
         // Create the GUI
@@ -72,13 +70,23 @@ public class Game {
                 monsters.add(new Monster("Vampire"));
             }
             else if(specialPick == 4){
-                monsters.add(new Monster("Posion"));
+                monsters.add(new Monster("Poison"));
             }
             else if(specialPick == 6){
                 monsters.add(new Monster("Equalizer"));
             }
             else if(specialPick == 8){
                 monsters.add(new Monster("Beefy"));
+            }
+            else if(specialPick ==1){
+                 if(Math.random() > .8){
+                    if(Math.random() > .8){
+                    monsters.add(new Monster("Good Luck"));
+                }
+            }
+                //else{
+                 //   monsters.add(new Monster());
+                //}
             }
             else{
                 monsters.add(new Monster());
@@ -140,9 +148,9 @@ public class Game {
         
         // Game over!
         if (playerHealth <= 0) {
-            gui.displayMessage("💀 DEFEAT! You have been defeated...");
+            gui.displayMessage("💀 DEFEAT! You suck...");
         } else {
-            gui.displayMessage("🎉 VICTORY! You defeated all monsters!");
+            gui.displayMessage("🎉 HOORAY! You won woohoo yay wow good for you yayayayayayay wow so good hooray wooohoo yippee so proud yayay so cool!");
         }
     }
     
@@ -312,7 +320,6 @@ public class Game {
     /**
      * Heal yourself
      * 
-     * TODO: How does healing work?
      * - How much HP?
      * - Any limits?
      */
@@ -338,8 +345,6 @@ public class Game {
     
     /**
      * Monster attacks player
-     * 
-     * TODO: Customize how monsters attack!
      * - How much damage?
      * - Which monster attacks?
      * - Special abilities?
@@ -351,27 +356,23 @@ public class Game {
         if(lastAttacked != null && lastAttacked.health() > 0 && !attackers.contains(lastAttacked)) 
             attackers.add(lastAttacked);
 
+        // MONSTERS TAKE TURNS ATTACKING
         for (Monster monster : attackers) {
             // shoudn't the monster's damage dealt logic be handle in the Monster class? 
             int damageTaken = (int)(Math.random() * monster.damage() + 1);
-            if (shieldPower > 0) {
-                double absorbance = Math.min(damageTaken, shieldPower);
-                damageTaken -= absorbance;
-                shieldPower -= absorbance;
-                gui.displayMessage("You block for " + absorbance + " damage. You have " + shieldPower + " shield left.");
-            }
                 
-            // After monster deals damage...
+            // SPECIALS
             if (!monster.special().isEmpty()) {
-                if (monster.special().equals("Vampire")) {
+                if(monster.special().equals("Vampire")) {
                     monster.takeDamage(-damageTaken);
+                    // JAVI SAY SOMETHING
                 }
                 else if(monster.special().equals("Poison")){
                     poisoned = true;
                 }
                 else if(monster.special().equals("Equalizer")){
-                    if (monster.health() < monster.health() / 2){
-                        if(monster.health() < monster.health() / 4){
+                    if(monster.health() < 50){
+                        if(monster.health() < 25){
                             damageTaken += damageTaken*4;
                         }
                         else damageTaken += damageTaken*2;
@@ -380,21 +381,32 @@ public class Game {
                 else if(monster.special().equals("Beefy")){
                     damageTaken += damageTaken*2;
                 }
+                else if(monster.special().equals("Good Luck")){
+                    damageTaken += damageTaken*1000;
+                }
+            } // end specials
+
+            //SHIELD
+            if(shieldPower > 0) {
+                double absorbance = Math.min(damageTaken, shieldPower);
+                damageTaken -= absorbance;
+                shieldPower -= absorbance;
+                gui.displayMessage("You block for " + absorbance + " damage. You have " + shieldPower + " shield left.");
             }
 
-            // move shield mitigation here
-
-            if (damageTaken > 0) {
+            if(damageTaken > 0) {
                 playerHealth -= damageTaken;
                 gui.displayMessage("Monster hits you for " + damageTaken + " damage!");
 
-                if (poisoned) {
+                // POISON 
+                if(poisoned) {
                     playerHealth -= 10;
+                    gui.updatePlayerHealth(playerHealth);
                     gui.displayMessage("You took 10 poison damage.");
-                    gui.pause(600);
-                    if (((int)(Math.random() * 8)) > 6) {
+                    gui.pause(1000);
+                    if(Math.random() > .6) {
                         gui.displayMessage("You recovered from the posion.");
-                        gui.pause(600);
+                        gui.pause(1000);
                         playerHealth += 5;
                         poisoned = false;
                 }
@@ -404,8 +416,10 @@ public class Game {
             }
             int index = monsters.indexOf(monster);
             gui.highlightMonster(index);
-            gui.pause(600);
+            gui.pause(900);
             gui.highlightMonster(-1);
+
+
         }
         
     }

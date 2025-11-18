@@ -121,6 +121,13 @@ public class Game {
         // TODO: Create starting items
         inventory = new ArrayList<>();
         // Add items here! Look at GameDemo.java for examples
+        if(Math.random() > .1) addHealthPotion();
+        if(Math.random() > .3) addBomb();
+        if(Math.random() > .3) addHealthPotion();
+        if(Math.random() > .5) addHealthPotion();
+        if(Math.random() > .7) addBomb();
+
+
         gui.updateInventory(inventory);
         
         // TODO: Customize button labels
@@ -151,6 +158,8 @@ public class Game {
             handlePlayerAction(action);
             gui.updateMonsters(monsters);
             gui.pause(500);
+
+            itemChance();
             
             // MONSTER'S TURN (if any alive and player alive)
             if (countLivingMonsters() > 0 && playerHealth > 0) {
@@ -312,28 +321,13 @@ public class Game {
             gui.displayMessage("Hit for " + damage + " damage!");
 
             
-            
             // Show which one we hit
             int index = monsters.indexOf(target);
             gui.highlightMonster(index);
             gui.pause(600);
             gui.highlightMonster(-1);
-
-            for (Monster m : monsters) {
-                if (m.health() <= 0){
-                    inventory.add(new Item("Bomb", "💣", () -> {
-                        for (Monster n : monsters) {
-                            if (n.health() > 0) {
-                                n.takeDamage(damage);
-                            }
-                        }
-                        gui.displayMessage("💣 BOOM! All monsters take " + damage + " damage!");
-                        gui.updateMonsters(monsters);
-            }));
-            }
             gui.updateInventory(inventory);
-        }
-        
+            
         }
     }
     
@@ -505,11 +499,43 @@ public class Game {
         if (alive.isEmpty()) return null;
         return alive.get((int)(Math.random() * alive.size()));
     }
+
+
+    private void itemChance(){
+        if(Math.random() > .9){ 
+            addBomb();
+            gui.displayMessage("You found a Bomb!");
+            gui.pause(800);
+            
+        }
+        if(Math.random() > .9) {
+            addHealthPotion();
+            gui.displayMessage("You found a Health Potion!");
+            gui.pause(800);
+        }
+    }
     
-    // TODO: Add more helper methods as you need them!
-    // Examples:
-    // - Method to find the strongest monster
-    // - Method to check if player has a specific item
-    // - Method to add special effects
-    // - etc.
+    // H E A L T H
+    private void addHealthPotion() {
+        inventory.add(new Item("Health Potion", "🧪", () -> {
+            playerHealth += maxHealth-playerHealth;
+            gui.updatePlayerHealth(playerHealth);
+            gui.displayMessage("Healed for max HP!");
+        }));
+    }
+    
+    // B O M B
+    private void addBomb() {
+        inventory.add(new Item("Bomb", "💣", () -> {
+            int bombDamage = 15 + (int)(Math.random() * 15);
+            for (Monster m : monsters) {
+                if (m.health() > 0) {
+                    m.takeDamage(bombDamage);
+                }
+            }
+            gui.displayMessage("BOOM! All monsters take " + bombDamage + " damage!");
+            gui.updateMonsters(monsters);
+            gui.pause(800);
+        }));
+    }
 }

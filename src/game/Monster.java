@@ -11,8 +11,8 @@ public class Monster {
         // randomly generate health, damage, speed
         health = (int)(Math.random() * 60 + 1) + 20;
 
-        // random 5 - 25
-        damage = (Math.random() * 40) + 5;
+        // random 5 - 20
+        damage = (Math.random() * 15) + 5;
 
         // speed: random 1-8
         speed = (int)(Math.random() * 10) + 1;

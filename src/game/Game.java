@@ -25,6 +25,7 @@ public class Game {
     private ArrayList<Item> inventory;
     private double shieldPower = 0;
     private int playerHealth;
+    private int maxHealth;
     private int playerDamage;
     private int playerHeal;
     private int playerSpeed;
@@ -67,22 +68,35 @@ public class Game {
             
             if(specialPick == 2){
                 //special monster
-                monsters.add(new Monster("Vampire"));
+                if(Math.random() > .2){
+                    monsters.add(new Monster("Vampire"));
+            }
+            else monsters.add(new Monster());
             }
             else if(specialPick == 4){
-                monsters.add(new Monster("Poison"));
+                if(Math.random() > .3){
+                    monsters.add(new Monster("Poison"));
+            }
+            else monsters.add(new Monster());
             }
             else if(specialPick == 6){
-                monsters.add(new Monster("Equalizer"));
+                if(Math.random() > .3){
+                    monsters.add(new Monster("Equalizer"));
+            }
+            else monsters.add(new Monster());
             }
             else if(specialPick == 8){
-                monsters.add(new Monster("Beefy"));
+                if(Math.random() > .4){
+                    monsters.add(new Monster("Beefy"));
             }
-            else if(specialPick ==1){
-                 if(Math.random() > .8){
+            else monsters.add(new Monster());
+            }
+            else if(specialPick == 1){
+                if(Math.random() > .7){
                     if(Math.random() > .8){
-                    monsters.add(new Monster("Good Luck"));
-                }
+                        monsters.add(new Monster("Good Luck"));
+                    }
+                    else monsters.add(new Monster());
             }
                 //else{
                  //   monsters.add(new Monster());
@@ -150,7 +164,7 @@ public class Game {
         if (playerHealth <= 0) {
             gui.displayMessage("💀 DEFEAT! You suck...");
         } else {
-            gui.displayMessage("🎉 HOORAY! You won woohoo yay wow good for you yayayayayayay wow so good hooray wooohoo yippee so proud yayay so cool!");
+            gui.displayMessage("🎉 HOORAY! You won woohoo yay wow good for you yayay wow so good hooray wooohoo yippee so proud yayay so cool!");
         }
     }
     
@@ -209,6 +223,7 @@ public class Game {
         playerHeal = 30;
         playerSpeed = 10;
         playerHealth = 100;
+        maxHealth = 100;
         
         // Customize stats based on character choice
         if (choice == 0) {
@@ -233,6 +248,7 @@ public class Game {
             gui.displayMessage("You chose Ninja! Fast and deadly, but risky.");
             playerHeal -= (int)(Math.random() * 20) + 5;        // Reduce heal by 5-50
             playerHealth -= (int)(Math.random() * 21) + 5;         // Reduce max health by 5-25
+            maxHealth = playerHealth;
             playerSpeed = (int)(Math.random() * 6) + 6;        // calc speed by by 6-11
         }
         
@@ -276,7 +292,7 @@ public class Game {
         Monster target = getRandomLivingMonster();
         lastAttacked = target;
         if (target != null) {
-            int baseDamage = (int)(playerDamage * 0.15);  // 15% of damage stat
+            int baseDamage = (int)(playerDamage * 0.3);  // 15% of damage stat
             int damage = baseDamage + (int)(Math.random() * baseDamage);
             if(damage == 0) {
                 playerHealth -= 5;
@@ -294,12 +310,30 @@ public class Game {
             
             target.takeDamage(damage);
             gui.displayMessage("Hit for " + damage + " damage!");
+
+            
             
             // Show which one we hit
             int index = monsters.indexOf(target);
             gui.highlightMonster(index);
             gui.pause(600);
             gui.highlightMonster(-1);
+
+            for (Monster m : monsters) {
+                if (m.health() <= 0){
+                    inventory.add(new Item("Bomb", "💣", () -> {
+                        for (Monster n : monsters) {
+                            if (n.health() > 0) {
+                                n.takeDamage(damage);
+                            }
+                        }
+                        gui.displayMessage("💣 BOOM! All monsters take " + damage + " damage!");
+                        gui.updateMonsters(monsters);
+            }));
+            }
+            gui.updateInventory(inventory);
+        }
+        
         }
     }
     
@@ -325,6 +359,7 @@ public class Game {
      */
     private void heal() {
         playerHealth += playerHeal;
+        int healAmount = playerHeal;
         gui.displayMessage("Healed for "+playerHeal+" HP.");
     }
     
@@ -379,7 +414,7 @@ public class Game {
                     }
                 }
                 else if(monster.special().equals("Beefy")){
-                    damageTaken += damageTaken*2;
+                    damageTaken += damageTaken*1.5;
                 }
                 else if(monster.special().equals("Good Luck")){
                     damageTaken += damageTaken*1000;
@@ -397,26 +432,27 @@ public class Game {
             if(damageTaken > 0) {
                 playerHealth -= damageTaken;
                 gui.displayMessage("Monster hits you for " + damageTaken + " damage!");
+                gui.pause(600);
 
-                // POISON 
-                if(poisoned) {
-                    playerHealth -= 10;
-                    gui.updatePlayerHealth(playerHealth);
-                    gui.displayMessage("You took 10 poison damage.");
-                    gui.pause(1000);
-                    if(Math.random() > .6) {
-                        gui.displayMessage("You recovered from the posion.");
-                        gui.pause(1000);
-                        playerHealth += 5;
-                        poisoned = false;
-                }
             }
-
+            // POISON 
+            if(poisoned) {
+                playerHealth -= 5;
                 gui.updatePlayerHealth(playerHealth);
+                gui.displayMessage("You took 5 poison damage.");
+                gui.pause(1000);
+                if(Math.random() > .6) {
+                    gui.displayMessage("You recovered from the posion.");
+                    gui.pause(1000);
+                    playerHealth += 5;
+                    poisoned = false;
             }
+
+            }
+            gui.updatePlayerHealth(playerHealth);
             int index = monsters.indexOf(monster);
             gui.highlightMonster(index);
-            gui.pause(900);
+            gui.pause(300);
             gui.highlightMonster(-1);
 
 

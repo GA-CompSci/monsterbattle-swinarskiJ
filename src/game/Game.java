@@ -54,7 +54,7 @@ public class Game {
      */
     private void setupGame() {
         // Create the GUI
-        gui = new MonsterBattleGUI("Monster Battle - Javi Edition");
+        gui = new MonsterBattleGUI("Monster Battle - Swinski Edition");
 
         
         //  CHOOSE DIFFICULTY (number of monsters to face)
@@ -138,7 +138,7 @@ public class Game {
         gui.setActionButtons(buttons);
         
         // Welcome message
-        gui.displayMessage("Battle Start! Pick your poison.");
+        gui.displayMessage("Battle Start! Choose your action.");
     }
     
     /**
@@ -159,7 +159,6 @@ public class Game {
             gui.updateMonsters(monsters);
             gui.pause(500);
 
-            itemChance();
             
             // MONSTER'S TURN (if any alive and player alive)
             if (countLivingMonsters() > 0 && playerHealth > 0) {
@@ -167,6 +166,9 @@ public class Game {
                 gui.updateMonsters(monsters);
                 gui.pause(500);
             }
+
+            itemChance();
+
         }
         
         // Game over!
@@ -183,7 +185,7 @@ public class Game {
      */
     private int chooseDifficulty() {
         // Set button labels to difficulty levels
-        String[] difficulties = {"Easy (3-4)", "Medium (4-5)", "Hard (5-7)", "Extreme (7-10)"};
+        String[] difficulties = {"Easy (3-4)", "Medium (5-6)", "Hard (7-9)", "Extreme (10-12)"};
         gui.setActionButtons(difficulties);
         
         // Display choice prompt
@@ -197,13 +199,13 @@ public class Game {
                 numMonsters = (int)(Math.random()*(4-3+1))+3; 
                 break;
             case 1:
-                numMonsters = (int)(Math.random()*(5-4+1))+4; 
+                numMonsters = (int)(Math.random()*(6-5+1))+5; 
                 break;
             case 2:
-                numMonsters = (int)(Math.random()*(7-5+1))+5; 
+                numMonsters = (int)(Math.random()*(9-7+1))+7; 
                 break;
             case 3:
-                numMonsters = (int)(Math.random()*(10-7+1))+7; 
+                numMonsters = (int)(Math.random()*(12-10+1))+10; 
                 break;
         }
         
@@ -212,7 +214,7 @@ public class Game {
         gui.displayMessage("You will be battling " + numMonsters + " monsters. Good Luck!");
         gui.pause(1500);
         
-        return numMonsters;
+        return numMonsters+1;
     }
 
     private void pickCharacterBuild() {
@@ -221,7 +223,7 @@ public class Game {
         gui.setActionButtons(characterClasses);
         
         // Display choice prompt
-        gui.displayMessage("---- PICK YOUR BUILD ----");
+        gui.displayMessage("---- PICK YOUR POISON ----");
         
         // Wait for player to click a button (0-3)
         int choice = gui.waitForAction();
@@ -239,13 +241,15 @@ public class Game {
             // Fighter: high damage, low healing and shield
             gui.displayMessage("You chose Fighter! High damage, but weak defense.");
             playerShield -= (int)(Math.random() * 25 + 1) + 5;  // Reduce shield by 6-50
-            playerHeal -= (int)(Math.random() * 20) + 5;        // Reduce heal by 5-50
+            playerHeal -= (int)(Math.random() * 20) + 10;        // Reduce heal by 10-50
             playerSpeed = (int)(Math.random() * 6) + 5;        // calc speed by by 5-10
         } else if (choice == 1) {
             // Tank: high shield, low damage and speed
             gui.displayMessage("You chose Tank! Tough defense, but slow attacks.");
             playerSpeed = (int)(Math.random() * 9) + 1;        // calc speed by by 1-9
             playerDamage -= (int)(Math.random() * 21) + 5;   // Reduce damage by 5-25
+            playerHealth += (int)(Math.random() * 41) + 20;
+            maxHealth = playerHealth;
         } else if (choice == 2) {
             // Healer: high healing, low damage and shield
             gui.displayMessage("You chose Healer! Great recovery, but fragile.");
@@ -303,9 +307,9 @@ public class Game {
         if (target != null) {
             int baseDamage = (int)(playerDamage * 0.3);  // 15% of damage stat
             int damage = baseDamage + (int)(Math.random() * baseDamage);
-            if(damage == 0) {
+            if(damage == 5) {
                 playerHealth -= 5;
-                gui.displayMessage("WOW! You suck!");
+                gui.displayMessage("WOW! You suck and hit yourself!");
                 gui. updatePlayerHealth(playerHealth);
             }
             else if(damage == playerDamage) {
@@ -320,7 +324,6 @@ public class Game {
             target.takeDamage(damage);
             gui.displayMessage("Hit for " + damage + " damage!");
 
-            
             // Show which one we hit
             int index = monsters.indexOf(target);
             gui.highlightMonster(index);
@@ -363,13 +366,13 @@ public class Game {
     private void useItem() {
         if (inventory.isEmpty()) {
             gui.displayMessage("No items in inventory!");
-            return;
         }
-        
+        else{
         // Use first item
         Item item = inventory.remove(0);
         gui.updateInventory(inventory);
         item.use();  // The item knows what to do!
+        }
     }
     
     /**
@@ -388,7 +391,7 @@ public class Game {
         // MONSTERS TAKE TURNS ATTACKING
         for (Monster monster : attackers) {
             // shoudn't the monster's damage dealt logic be handle in the Monster class? 
-            int damageTaken = (int)(Math.random() * monster.damage() + 1);
+            int damageTaken = (int)(Math.random() * monster.damage() + 5);
                 
             // SPECIALS
             if (!monster.special().isEmpty()) {
@@ -421,6 +424,7 @@ public class Game {
                 damageTaken -= absorbance;
                 shieldPower -= absorbance;
                 gui.displayMessage("You block for " + absorbance + " damage. You have " + shieldPower + " shield left.");
+                gui.pause(300);
             }
 
             if(damageTaken > 0) {
@@ -502,15 +506,17 @@ public class Game {
 
 
     private void itemChance(){
-        if(Math.random() > .9){ 
+        if(Math.random() > .95){ 
             addBomb();
             gui.displayMessage("You found a Bomb!");
+            gui.updateInventory(inventory);
             gui.pause(800);
             
         }
-        if(Math.random() > .9) {
+        if(Math.random() > .95) {
             addHealthPotion();
             gui.displayMessage("You found a Health Potion!");
+            gui.updateInventory(inventory);
             gui.pause(800);
         }
     }

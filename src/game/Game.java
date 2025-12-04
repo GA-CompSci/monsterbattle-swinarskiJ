@@ -62,52 +62,31 @@ public class Game {
         monsters = new ArrayList<>();
         
         //special abilities?
-        for(int k = 0; k<numMonsters; k++) {
+        for(int k = 0; k < numMonsters; k++) {
             
-            int specialPick = (int)(Math.random() * 8)+1;
+            int specialPick = (int)(Math.random() * 30)+1;
             
-            if(specialPick == 2){
+            if(specialPick == 5){
                 //special monster
-                if(Math.random() > .2){
-                    monsters.add(new Monster("Vampire"));
+                monsters.add(new Monster("Vampire"));
             }
-            else monsters.add(new Monster());
+            else if(specialPick == 10){
+                monsters.add(new Monster("Poison"));
             }
-            else if(specialPick == 4){
-                if(Math.random() > .3){
-                    monsters.add(new Monster("Poison"));
+            else if(specialPick == 15){
+                monsters.add(new Monster("Equalizer"));
             }
-            else monsters.add(new Monster());
+            else if(specialPick == 20){
+                monsters.add(new Monster("Beefy"));
             }
-            else if(specialPick == 6){
-                if(Math.random() > .3){
-                    monsters.add(new Monster("Equalizer"));
-            }
-            else monsters.add(new Monster());
-            }
-            else if(specialPick == 8){
-                if(Math.random() > .4){
-                    monsters.add(new Monster("Beefy"));
-            }
-            else monsters.add(new Monster());
-            }
-            else if(specialPick == 1){
-                if(Math.random() > .7){
-                    if(Math.random() > .8){
-                        monsters.add(new Monster("Good Luck"));
-                    }
-                    else monsters.add(new Monster());
-            }
-                //else{
-                 //   monsters.add(new Monster());
-                //}
+            else if(specialPick == 25){
+                monsters.add(new Monster("Good Luck"));
             }
             else{
                 monsters.add(new Monster());
             }
         }
     
-        
         gui.updateMonsters(monsters);
        
 
@@ -194,32 +173,33 @@ public class Game {
         // Wait for player to click a button (0-3)
         int choice = gui.waitForAction();
         int numMonsters = 0;
-        switch(choice){
+        switch (choice) {
             case 0:
-                numMonsters = (int)(Math.random()*(4-3+1))+3; 
+                numMonsters = (int)(Math.random() * (2)) + 3;  // 3-4
                 break;
             case 1:
-                numMonsters = (int)(Math.random()*(6-5+1))+5; 
+                numMonsters = (int)(Math.random() * (6 - 5 + 1)) + 5;  // 5-6
                 break;
             case 2:
-                numMonsters = (int)(Math.random()*(9-7+1))+7; 
+                numMonsters = (int)(Math.random() * (3)) + 7;  // 7-9
                 break;
             case 3:
-                numMonsters = (int)(Math.random()*(12-10+1))+10; 
+                numMonsters = (int)(Math.random() * (12 - 10 + 1)) + 10; // 10-12
                 break;
         }
+
         
         // Determine number of monsters based on choice
         
         gui.displayMessage("You will be battling " + numMonsters + " monsters. Good Luck!");
         gui.pause(1500);
         
-        return numMonsters+1;
+        return numMonsters;
     }
 
     private void pickCharacterBuild() {
         // Set button labels to character classes
-        String[] characterClasses = {"Fighter", "Tank", "Healer", "Ninja"};
+        String[] characterClasses = {"Slayer", "Brute", "Medic", "Ninja"};
         gui.setActionButtons(characterClasses);
         
         // Display choice prompt
@@ -239,20 +219,20 @@ public class Game {
         // Customize stats based on character choice
         if (choice == 0) {
             // Fighter: high damage, low healing and shield
-            gui.displayMessage("You chose Fighter! High damage, but weak defense.");
+            gui.displayMessage("You chose Slayer! High damage, but weak defense.");
             playerShield -= (int)(Math.random() * 25 + 1) + 5;  // Reduce shield by 6-50
             playerHeal -= (int)(Math.random() * 20) + 10;        // Reduce heal by 10-50
             playerSpeed = (int)(Math.random() * 6) + 5;        // calc speed by by 5-10
         } else if (choice == 1) {
             // Tank: high shield, low damage and speed
-            gui.displayMessage("You chose Tank! Tough defense, but slow attacks.");
+            gui.displayMessage("You chose Brute! Tough defense, but slow attacks.");
             playerSpeed = (int)(Math.random() * 9) + 1;        // calc speed by by 1-9
             playerDamage -= (int)(Math.random() * 21) + 5;   // Reduce damage by 5-25
             playerHealth += (int)(Math.random() * 41) + 20;
             maxHealth = playerHealth;
         } else if (choice == 2) {
             // Healer: high healing, low damage and shield
-            gui.displayMessage("You chose Healer! Great recovery, but fragile.");
+            gui.displayMessage("You chose Medic! Great recovery, but fragile.");
             playerDamage -= (int)(Math.random() * 21) + 5;      // Reduce damage by 5-30
             playerShield -= (int)(Math.random() * 21) + 5;      // Reduce shield by 5-50
             playerSpeed = (int)(Math.random() * 10) + 1;        // calc speed by by 1-10
